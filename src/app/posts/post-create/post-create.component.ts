@@ -4,6 +4,7 @@ import {MatInputModule } from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Post } from '../post.model';
 
 @Component({
   selector: 'app-post-create',
@@ -15,10 +16,10 @@ import { CommonModule } from '@angular/common';
 export class PostCreateComponent {
   enteredContent = '';
   enteredTitle = '';
-  @Output() postCreated = new EventEmitter();
+  @Output() postCreated = new EventEmitter<Post>();
 
   onAddPost() {
-    const post = {
+    const post: Post = {
       title: this.enteredTitle, 
       content: this.enteredContent
     };
