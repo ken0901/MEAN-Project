@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {MatInputModule } from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
@@ -13,11 +13,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './post-create.component.css'
 })
 export class PostCreateComponent {
-  enteredValue = '';
-  newPost = 'NO CONTENT';
+  enteredContent = '';
+  enteredTitle = '';
+  @Output() postCreated = new EventEmitter();
 
   onAddPost() {
-    this.newPost = this.enteredValue;
+    const post = {
+      title: this.enteredTitle, 
+      content: this.enteredContent
+    };
+    this.postCreated.emit(post);
   }
   // onAddPost(postInput: HTMLTextAreaElement) {
   //   this.newPost = postInput.value;
