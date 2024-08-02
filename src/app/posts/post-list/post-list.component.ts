@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { Post } from '../post.model';
+import { PostsService } from '../posts.service';
 
 @Component({
   selector: 'app-post-list',
@@ -17,4 +18,6 @@ export class PostListComponent {
   //   {title: "Third Post", content: "This is the third post\'s content"},
   // ];
   @Input() posts: Post[] = [];
+
+  constructor(private postsService: PostsService) {}
 }
