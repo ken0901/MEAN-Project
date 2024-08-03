@@ -25,6 +25,7 @@ export class PostCreateComponent {
     }
     
     this.postService.addPost(form.value.title,  form.value.content);
+    form.resetForm();
   }
   // onAddPost(postInput: HTMLTextAreaElement) {
   //   this.newPost = postInput.value;
