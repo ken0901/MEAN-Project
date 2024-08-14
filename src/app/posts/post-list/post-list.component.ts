@@ -5,11 +5,12 @@ import {MatButtonModule} from '@angular/material/button';
 import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
 import { Subscription } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
   standalone: true,
-  imports: [MatExpansionModule, CommonModule, MatButtonModule],
+  imports: [MatExpansionModule, CommonModule, MatButtonModule, RouterLink],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css'
 })
@@ -25,7 +26,7 @@ export class PostListComponent implements OnInit, OnDestroy{
   constructor(private postsService: PostsService) {}
 
   ngOnInit(): void {
-    this.postsService.getPost();
+    this.postsService.getPosts();
     this.postsSub = this.postsService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.posts = posts;
     });
