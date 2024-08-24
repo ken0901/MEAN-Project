@@ -7,11 +7,12 @@ import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
 import { Subscription } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-post-list',
   standalone: true,
-  imports: [MatExpansionModule, CommonModule, MatButtonModule, RouterLink, MatProgressSpinnerModule],
+  imports: [MatExpansionModule, CommonModule, MatButtonModule, RouterLink, MatProgressSpinnerModule, MatPaginatorModule],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css'
 })
@@ -23,6 +24,9 @@ export class PostListComponent implements OnInit, OnDestroy{
   // ];
   posts: Post[] = [];
   isLoading = false;
+  totalPosts = 10;
+  postsPerPage = 2;
+  pageSizeOptions = [1, 2, 5, 10];
   private postsSub: Subscription;
 
   constructor(private postsService: PostsService) {}
@@ -42,5 +46,9 @@ export class PostListComponent implements OnInit, OnDestroy{
 
   onDelete(postId: string) {
     this.postsService.deletePost(postId);
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    
   }
 }
