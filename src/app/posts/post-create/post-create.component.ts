@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import {MatInputModule } from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
@@ -9,6 +9,8 @@ import { PostsService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Post } from '../post.model';
 import { mimeType } from './mime-type.validator';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-post-create',
@@ -17,7 +19,7 @@ import { mimeType } from './mime-type.validator';
   templateUrl: './post-create.component.html',
   styleUrl: './post-create.component.css'
 })
-export class PostCreateComponent implements OnInit{
+export class PostCreateComponent implements OnInit, OnDestroy{
   enteredContent = "";
   enteredTitle = "";
   isLoading = false;
@@ -26,11 +28,18 @@ export class PostCreateComponent implements OnInit{
   imagePreview: string;
   private mode = 'create';
   private postId: string;
+  private authStatusSub: Subscription
 
   constructor(private postService: PostsService,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute,
+              private authService: AuthService) {}
   
   ngOnInit(): void {
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
+      authStatus => {
+        this.isLoading = false;
+      }
+    );
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       content: new FormControl(null, {validators: [Validators.required]}),
@@ -89,5 +98,9 @@ export class PostCreateComponent implements OnInit{
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+  }
+
+  ngOnDestroy(): void {
+    this.authStatusSub.unsubscribe();
   }
 }
